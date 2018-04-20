@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="IAmProductive.Views.HelpPage.HelpPage"
+             Title="Help"
+             BackgroundColor="{StaticResource ContentBackgroungColor}"
+             Icon="ic_pan_tool_black_24dp.png" >
+    <ContentPage.Content>
+        <ScrollView HorizontalOptions="Fill" VerticalOptions="Fill">
+            <StackLayout Padding="5">
+                <StackLayout HorizontalOptions="Center">
+                    <Label Text="How to use this app" FontAttributes="Bold" TextColor="{StaticResource NormalTextColor}" />
+                </StackLayout>
+
+                <Label Text="What is this app?" FontAttributes="Bold" TextColor="{StaticResource NormalTextColor}"/>
+                <Label Text="This app will help you become more productive by tracking your day, all that is required is pressing a few buttons" TextColor="{StaticResource NormalTextColor}"/>
+                <Label Text="How to use this app?" FontAttributes="Bold" TextColor="{StaticResource NormalTextColor}"/>
+                
+                <Label Text="In the tasks page you will 3 types of buttons, these buttons are : Productive, Unproductive, and Miscellaneous. You will press a button according to which task or activity you are currently doing, you can also add your own custom task. You can also edit the names of the tasks." TextColor="{StaticResource NormalTextColor}"/>
+                <Label Text="Once you do press a button then you will be prompt whether or not you want to add it. If you press no then nothing happends, if you press yes a calender will pop up so you can add the task for the current day. Keep in mind you cannot add tasks for any other day (though you can do this on the stats page)." TextColor="{StaticResource NormalTextColor}" />
+                <Label Text ="Once you press the day you will see your tasks on a page, here will be all the tasks/activities you have performed. Also notice there is an Add button, here you can manually add tasks for whatever day. This is used incase you forgot to add something or made a mistake. You can also press the Stats button next to the Add button to get a barchart or a piechart version of your progress." TextColor="{StaticResource NormalTextColor}" />
+
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,0 +1,481 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:chart="clr-namespace:Syncfusion.SfChart.XForms;assembly=Syncfusion.SfChart.XForms"
+             xmlns:controls="clr-namespace:SegmentedControl.FormsPlugin.Abstractions;assembly=SegmentedControl.FormsPlugin.Abstractions"
+            xmlns:vm="clr-namespace:IAmProductive.ViewModels.ChartsViewModel;assembly=IAmProductive"
+            
+             xmlns:cv="clr-namespace:CarouselView.FormsPlugin.Abstractions;assembly=CarouselView.FormsPlugin.Abstractions"
+             xmlns:ui_constants="clr-namespace:IAmProductive.Constants"
+             Title="Stats"
+             xmlns:local="clr-namespace:IAmProductive.Helpers;assembly=IAmProductive"
+             x:Class="IAmProductive.Views.TaskStatisticsPage.ChartsViewPages.ChartViewPage">
+    <!--xmlns:cv="clr-namespace:Xamarin.Forms;assembly=Xamarin.Forms.CarouselView"-->
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <DataTemplate x:Key="dataMarkerTemplate">
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="{Binding Name , StringFormat='{0}:'}" VerticalOptions="Center" FontSize = "12" TextColor="White"/>
+                    <Label Text="{Binding Height, StringFormat='{0:N}'}" VerticalOptions="Center" FontSize = "12" TextColor="White"/>
+                </StackLayout>
+            </DataTemplate>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem 
+            Text="Type" 
+            Name="Charts" 
+            Activated="ChartTypeToolbarItem_Activated"
+            Order="Primary" >
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+
+
+        <StackLayout  Spacing="10" 
+              VerticalOptions="Fill"
+              HorizontalOptions="Fill"
+              Orientation="Vertical">
+           
+           
+
+               
+                <controls:SegmentedControl
+                    x:Name="SegControl" 
+                    TintColor="#007AFF"
+                    SelectedSegment="0"
+                    ValueChanged="SegControl_ValueChanged"
+                    Margin="8,8,8,8">
+                     <controls:SegmentedControl.Children>
+                        <controls:SegmentedControlOption Text="Daily" />
+                        <controls:SegmentedControlOption Text="Weekly" />
+                        <controls:SegmentedControlOption Text="Monthly" />
+                     </controls:SegmentedControl.Children>
+                </controls:SegmentedControl>
+                <!--chart types picker-->
+                <Picker 
+                    x:Name="ChartTypePicker" 
+                    ItemsSource="{Binding ChartTypesList}"
+                    HeightRequest="40"
+                    IsVisible="False"
+                    BackgroundColor="#FAFAFA"
+                    SelectedIndexChanged="TypePicker_SelectedIndexChanged"
+                    SelectedItem="{Binding SelectedChartType}"  
+                    Title="Select Chart View"/>
+                <StackLayout
+                    HorizontalOptions="FillAndExpand"
+                    VerticalOptions="FillAndExpand">
+                 
+                    <!--Daily bar chart-->
+                    <chart:SfChart
+                    x:Name="DailyBarChart" 
+                    HorizontalOptions="FillAndExpand" 
+                    IsVisible="True"
+                    VerticalOptions="FillAndExpand" >
+                        <chart:SfChart.Title>
+                            <chart:ChartTitle Text="{Binding CurrentDayDate}"/>
+                        </chart:SfChart.Title>
+                        <chart:SfChart.PrimaryAxis>
+                            <chart:CategoryAxis>
+                                <chart:CategoryAxis.Title>
+                                    <chart:ChartAxisTitle Text="{Binding DailyChartLabel}"/>
+                                </chart:CategoryAxis.Title>
+                            </chart:CategoryAxis>
+                        </chart:SfChart.PrimaryAxis>
+                        <chart:SfChart.SecondaryAxis>
+                            <chart:NumericalAxis Minimum="0" Maximum="24">
+                                <chart:NumericalAxis.Title>
+                                    <chart:ChartAxisTitle Text="Hour"/>
+                                </chart:NumericalAxis.Title>
+                            </chart:NumericalAxis>
+                        </chart:SfChart.SecondaryAxis>
+                        <chart:SfChart.Series>
+                            <chart:ColumnSeries ItemsSource="{Binding DailyBarChart}" 
+                                Label="Heights"  
+                                XBindingPath="Name" 
+                                EnableAnimation="True"
+                                DataMarkerPosition="Top"
+                                YBindingPath="Height"
+                                IsVisibleOnLegend="True"
+                                 EnableTooltip="True">
+                                <chart:ColumnSeries.DataMarker>
+                                    <chart:ChartDataMarker/>
+                                </chart:ColumnSeries.DataMarker>
+                                <chart:ColumnSeries.ColorModel>
+                                    <chart:ChartColorModel Palette="Custom" CustomBrushes="{Binding Colors}"/>
+                                </chart:ColumnSeries.ColorModel>
+                            </chart:ColumnSeries>
+                        </chart:SfChart.Series>
+                    </chart:SfChart>
+                    <!--end Daily bar chart-->
+                
+                    <!--daily PieChaart-->
+                    <chart:SfChart 
+                    x:Name="DailyPieChart"
+                    IsVisible="False"
+                    HorizontalOptions="FillAndExpand" 
+                    VerticalOptions="FillAndExpand">
+                        <chart:SfChart.Legend>
+                            <chart:ChartLegend></chart:ChartLegend>
+                        </chart:SfChart.Legend>
+                        <chart:SfChart.Title>
+                            <chart:ChartTitle Text="{Binding CurrentDayDate}"/>
+                        </chart:SfChart.Title>
+                        <chart:PieSeries
+                        ItemsSource ="{Binding DailyPieChartDataList}"
+                        Label="{Binding DailyChartLabel}"   
+                        XBindingPath="Name"
+                        ExplodeOnTouch="True"
+                        EnableAnimation="True"
+                        EnableTooltip="True"
+                        YBindingPath="Height">
+                            <chart:ColumnSeries.DataMarker>
+                                <chart:ChartDataMarker LabelContent="Percentage"/>
+                            </chart:ColumnSeries.DataMarker>
+                            <chart:ColumnSeries.ColorModel>
+                                <chart:ChartColorModel Palette="Custom" CustomBrushes="{Binding Colors}"/>
+                            </chart:ColumnSeries.ColorModel>
+                        </chart:PieSeries>
+                    </chart:SfChart>
+                    <!--End daily pie chart-->
+      <!--//////////////////////////////////////////////////////////////////////////////////-->             
+                    
+                    <!--Weekly bar chart-->
+                    <chart:SfChart 
+                    x:Name="WeekelyBarChart" 
+                    HorizontalOptions="FillAndExpand" 
+                    IsVisible="False"
+                    VerticalOptions="FillAndExpand" >
+                        <chart:SfChart.Legend>
+                            <chart:ChartLegend/>
+                        </chart:SfChart.Legend>
+                        <chart:SfChart.Title>
+                            <chart:ChartTitle Text="{Binding CurrentMonth}"/>
+                        </chart:SfChart.Title>
+                        <chart:SfChart.PrimaryAxis>
+                            <chart:CategoryAxis>
+                                <chart:CategoryAxis.Title>
+                                    <chart:ChartAxisTitle Text="{Binding WeekelyChartLabel}"/>
+                                </chart:CategoryAxis.Title>
+                            </chart:CategoryAxis>
+                        </chart:SfChart.PrimaryAxis>
+                        <chart:SfChart.SecondaryAxis>
+                            <chart:NumericalAxis Minimum="0" Maximum="168">
+                                <chart:NumericalAxis.Title>
+                                    <chart:ChartAxisTitle Text="Hour"/>
+                                </chart:NumericalAxis.Title>
+                            </chart:NumericalAxis>
+                        </chart:SfChart.SecondaryAxis>
+                        <chart:SfChart.Series>
+                            <!--Productive Series-->
+                            <chart:StackingColumnSeries 
+                            Color="#6be027"
+                            Label="Productive"
+                            ItemsSource ="{Binding wProductiveStackBarChartList}"  
+                            XBindingPath="Name"
+                            IsVisibleOnLegend="True"
+						    YBindingPath="Height"
+                            EnableAnimation="True"
+                            EnableTooltip="True"/>
+                            <!--Un Productive Series-->
+                            <chart:StackingColumnSeries 
+                            Color="#eb1923"
+                            Label="Unproductive"
+                            ItemsSource ="{Binding wUnProductiveStackBarChartList}" 
+                            XBindingPath="Name"
+                            EnableAnimation="True"
+                            IsVisibleOnLegend="True"
+						    YBindingPath="Height"
+                            EnableTooltip="True"/>
+                            <!--Miscellaneous Series-->
+                            <chart:StackingColumnSeries 
+                            Color="#808080"
+                             Label="Miscellaneous"
+                            ItemsSource ="{Binding wMiscellaneousStackBarChartList}"
+                            XBindingPath="Name"
+                            IsVisibleOnLegend="True"
+                            EnableAnimation="True"    
+						    YBindingPath="Height"
+                            EnableTooltip="True"/>
+                        </chart:SfChart.Series>
+                    </chart:SfChart>
+                    <!--End Weekly bar chart-->
+                  
+                    <!--///////// weekly pie-->
+
+                    <!--weekly PieChaart-->
+                    
+                   <StackLayout
+                        HorizontalOptions="FillAndExpand"
+                        VerticalOptions="FillAndExpand"
+                        IsVisible="False"
+                         x:Name="WeeklyPieChart">
+                    <cv:CarouselViewControl
+                               x:Name="carousel"
+                               ShowArrows="true"
+                               ItemsSource="{Binding WeeklyPieCharts}"
+                               VerticalOptions="FillAndExpand"
+                               ArrowsTintColor="White"
+                               ArrowsTransparency="1"
+                               ArrowsBackgroundColor="#808080" 
+                               InterPageSpacing="20"
+                               Orientation="Horizontal">
+                              <cv:CarouselViewControl.ItemTemplate>
+                                <DataTemplate>
+                                <StackLayout 
+                                    Orientation="Vertical">
+                                    <chart:SfChart 
+                                        HorizontalOptions="FillAndExpand" 
+                                        VerticalOptions="FillAndExpand">
+                                        <chart:SfChart.Legend>
+                                            <chart:ChartLegend></chart:ChartLegend>
+                                        </chart:SfChart.Legend>
+                                        <chart:SfChart.Title>
+                                            <chart:ChartTitle Text="{Binding CureentMonth}"/>
+                                        </chart:SfChart.Title>
+                                        <chart:PieSeries
+                                          ItemsSource ="{Binding WeeklyPieChart}"
+                                          XBindingPath="Name"
+                                          Label="{Binding ChartLable}"   
+                                          EnableTooltip="True"
+                                          ExplodeOnTouch="True"
+                                          EnableAnimation="True"
+                                          YBindingPath="Height">
+                                            <chart:ColumnSeries.DataMarker>
+                                                <chart:ChartDataMarker LabelContent="Percentage"/>
+                                            </chart:ColumnSeries.DataMarker>
+                                            <chart:ColumnSeries.ColorModel>
+                                                <chart:ChartColorModel Palette="Custom" CustomBrushes="{Binding Colors}"/>
+                                            </chart:ColumnSeries.ColorModel>
+                                        </chart:PieSeries>
+                                    </chart:SfChart>
+                                </StackLayout>
+                            </DataTemplate>
+                        </cv:CarouselViewControl.ItemTemplate>
+                    </cv:CarouselViewControl>
+
+
+                    <!--<ScrollView >
+                        <StackLayout Orientation="Vertical">
+                            --><!--week 1 pie chart--><!--
+                            <chart:SfChart 
+                                HeightRequest="350"
+                                x:Name="Week1PieChart"
+                                IsVisible="False"
+                                HorizontalOptions="FillAndExpand" >
+                                <chart:SfChart.Legend>
+                                    <chart:ChartLegend></chart:ChartLegend>
+                                </chart:SfChart.Legend>
+                                <chart:SfChart.Title>
+                                    <chart:ChartTitle Text="{Binding CurrentMonth , StringFormat='( Week 1 ) {0}'}"/>
+                                </chart:SfChart.Title>
+                                <chart:PieSeries
+                                        ItemsSource ="{Binding WeekOnePieChart}"
+                                        XBindingPath="Name"
+                                        Label="{Binding MonthChartLabel}"   
+                                        EnableTooltip="True"
+                                        ExplodeOnTouch="True"
+                                        EnableAnimation="True"
+                                        YBindingPath="Height">
+                                    <chart:ColumnSeries.DataMarker>
+                                        <chart:ChartDataMarker LabelContent="Percentage"/>
+                                    </chart:ColumnSeries.DataMarker>
+                                    <chart:ColumnSeries.ColorModel>
+                                        <chart:ChartColorModel Palette="Custom" CustomBrushes="{Binding Colors}"/>
+                                    </chart:ColumnSeries.ColorModel>
+                                </chart:PieSeries>
+                            </chart:SfChart>
+                            --><!--week 2 pie chart--><!--
+                            <chart:SfChart 
+                                 HeightRequest="350"
+                                 IsVisible="False"
+                                 x:Name="Week2PieChart"
+                                 HorizontalOptions="FillAndExpand" >
+                                <chart:SfChart.Legend>
+                                    <chart:ChartLegend></chart:ChartLegend>
+                                </chart:SfChart.Legend>
+                                <chart:SfChart.Title>
+                                    <chart:ChartTitle Text="{Binding CurrentMonth, StringFormat='( Week 2 ) {0}'}}"/>
+                                </chart:SfChart.Title>
+                                <chart:PieSeries
+                                        ItemsSource ="{Binding WeekTwoPieChart}"
+                                        XBindingPath="Name"
+                                        Label="{Binding MonthChartLabel}"   
+                                        EnableTooltip="True"
+                                        ExplodeOnTouch="True"
+                                        EnableAnimation="True"
+                                        YBindingPath="Height">
+                                    <chart:ColumnSeries.DataMarker>
+                                        <chart:ChartDataMarker LabelContent="Percentage"/>
+                                    </chart:ColumnSeries.DataMarker>
+                                    <chart:ColumnSeries.ColorModel>
+                                        <chart:ChartColorModel Palette="Custom" CustomBrushes="{Binding Colors}"/>
+                                    </chart:ColumnSeries.ColorModel>
+                                </chart:PieSeries>
+                            </chart:SfChart>
+                            --><!--week 3 pie chart--><!--
+                            <chart:SfChart 
+                                 HeightRequest="350"
+                                 IsVisible="False"
+                                 x:Name="Week3PieChart"
+                                 HorizontalOptions="FillAndExpand" >
+                                <chart:SfChart.Legend>
+                                    <chart:ChartLegend></chart:ChartLegend>
+                                </chart:SfChart.Legend>
+                                <chart:SfChart.Title>
+                                    <chart:ChartTitle Text="{Binding CurrentMonth ,StringFormat='( Week 3) {0}'}}"/>
+                                </chart:SfChart.Title>
+                                <chart:PieSeries
+                                        ItemsSource ="{Binding  WeekThreePieChart}"
+                                        XBindingPath="Name"
+                                        Label="{Binding MonthChartLabel}"   
+                                        EnableTooltip="True"
+                                        ExplodeOnTouch="True"
+                                        EnableAnimation="True"
+                                        YBindingPath="Height">
+                                    <chart:ColumnSeries.DataMarker>
+                                        <chart:ChartDataMarker LabelContent="Percentage"/>
+                                    </chart:ColumnSeries.DataMarker>
+                                    <chart:ColumnSeries.ColorModel>
+                                        <chart:ChartColorModel Palette="Custom" CustomBrushes="{Binding Colors}"/>
+                                    </chart:ColumnSeries.ColorModel>
+                                </chart:PieSeries>
+                            </chart:SfChart>
+                            --><!--week 4 pie chart--><!--
+                            <chart:SfChart 
+                                 HeightRequest="350"
+                                 IsVisible="False"
+                                 x:Name="Week4PieChart"
+                                 HorizontalOptions="FillAndExpand" >
+                                <chart:SfChart.Legend>
+                                    <chart:ChartLegend></chart:ChartLegend>
+                                </chart:SfChart.Legend>
+                                <chart:SfChart.Title>
+                                    <chart:ChartTitle Text="{Binding CurrentMonth, StringFormat='( Week 4 ) {0}'}}"/>
+                                </chart:SfChart.Title>
+                                <chart:PieSeries
+                                        ItemsSource ="{Binding WeekFourPieChart}"
+                                        XBindingPath="Name"
+                                        Label="{Binding MonthChartLabel}"   
+                                        EnableTooltip="True"
+                                        ExplodeOnTouch="True"
+                                        EnableAnimation="True"
+                                        YBindingPath="Height">
+                                    <chart:ColumnSeries.DataMarker>
+                                        <chart:ChartDataMarker LabelContent="Percentage"/>
+                                    </chart:ColumnSeries.DataMarker>
+                                    <chart:ColumnSeries.ColorModel>
+                                        <chart:ChartColorModel Palette="Custom" CustomBrushes="{Binding Colors}"/>
+                                    </chart:ColumnSeries.ColorModel>
+                                </chart:PieSeries>
+                            </chart:SfChart>
+                        </StackLayout>
+                    </ScrollView>-->
+                </StackLayout>
+                           
+                    <!--End weekly pie chart-->
+<!--/////////////////////////////////////////////////////////////-->
+                
+                    <!--Monthly bar chart-->
+                    <chart:SfChart  
+                    x:Name="MonthlyBarChart" 
+                    HorizontalOptions="FillAndExpand" 
+                    IsVisible="True" 
+                    VerticalOptions="FillAndExpand" >
+                        <chart:SfChart.Title>
+                            <chart:ChartTitle Text="{Binding CurrentMonth}"/>
+                        </chart:SfChart.Title>
+                        <chart:SfChart.PrimaryAxis>
+                            <chart:CategoryAxis>
+                                <chart:CategoryAxis.Title>
+                                    <chart:ChartAxisTitle Text="{Binding MonthChartLabel}"/>
+                                </chart:CategoryAxis.Title>
+                            </chart:CategoryAxis>
+                        </chart:SfChart.PrimaryAxis>
+                        <chart:SfChart.SecondaryAxis>
+                            <chart:NumericalAxis Minimum="0" Maximum="760">
+                                <chart:NumericalAxis.Title>
+                                    <chart:ChartAxisTitle Text="Hour"/>
+                                </chart:NumericalAxis.Title>
+                            </chart:NumericalAxis>
+                        </chart:SfChart.SecondaryAxis>
+                        <chart:SfChart.Series>
+                            <chart:ColumnSeries ItemsSource="{Binding MonthlyBarChart}" 
+                                Label="{Binding MonthChartLabel}"  
+                                XBindingPath="Name" 
+                                YBindingPath="Height"
+                                EnableAnimation="True"
+                                EnableTooltip="True">
+                                <chart:ColumnSeries.DataMarker>
+                                    <chart:ChartDataMarker/>
+                                </chart:ColumnSeries.DataMarker>
+                                <chart:ColumnSeries.ColorModel>
+                                    <chart:ChartColorModel Palette="Custom" CustomBrushes="{Binding Colors}"/>
+                                </chart:ColumnSeries.ColorModel>
+                            </chart:ColumnSeries>
+                        </chart:SfChart.Series>
+                    </chart:SfChart>
+                    <!--end Monthly bar chart-->
+                  
+                    <!--monthly PieChaart-->
+                    <chart:SfChart 
+                    x:Name="MonthlyPieChart"
+                    IsVisible="False"
+                    HorizontalOptions="FillAndExpand" 
+                    VerticalOptions="FillAndExpand">
+                        <chart:SfChart.Legend>
+                            <chart:ChartLegend></chart:ChartLegend>
+                        </chart:SfChart.Legend>
+                        <chart:SfChart.Title>
+                            <chart:ChartTitle Text="{Binding CurrentMonth}"/>
+                        </chart:SfChart.Title>
+                        <chart:PieSeries
+                        ItemsSource ="{Binding MonthlyPieChartDataList}"
+                        XBindingPath="Name"
+                        Label="{Binding MonthChartLabel}"   
+                        EnableTooltip="True"
+                        ExplodeOnTouch="True"
+                        EnableAnimation="True"
+                        YBindingPath="Height">
+                            <chart:ColumnSeries.DataMarker>
+                                <chart:ChartDataMarker LabelContent="Percentage"/>
+                            </chart:ColumnSeries.DataMarker>
+                            <chart:ColumnSeries.ColorModel>
+                                <chart:ChartColorModel Palette="Custom" CustomBrushes="{Binding Colors}"/>
+                            </chart:ColumnSeries.ColorModel>
+                        </chart:PieSeries>
+                    </chart:SfChart>
+                    <!--End monthly pie chart-->
+                </StackLayout>
+        </StackLayout>
+               
+    </ContentPage.Content>
+
+</ContentPage>
+
+
+<!--<chart:SfChart 
+                                   HorizontalOptions="FillAndExpand" 
+                                    VerticalOptions="FillAndExpand">
+                                    <chart:SfChart.Legend>
+                                        <chart:ChartLegend></chart:ChartLegend>
+                                    </chart:SfChart.Legend>
+                                    <chart:SfChart.Title>
+                                        <chart:ChartTitle Text="{Binding CureentMonth}"/>
+                                    </chart:SfChart.Title>
+                                    <chart:PieSeries
+                                        ItemsSource ="{Binding  WeeklyPieChart}"
+                                        XBindingPath="Name"
+                                        Label="{Binding ChartLable}"   
+                                        EnableTooltip="True"
+                                        ExplodeOnTouch="True"
+                                        EnableAnimation="True"
+                                        YBindingPath="Height">
+                                        <chart:ColumnSeries.DataMarker>
+                                            <chart:ChartDataMarker LabelContent="Percentage"/>
+                                        </chart:ColumnSeries.DataMarker>
+                                        <chart:ColumnSeries.ColorModel>
+                                            <chart:ChartColorModel Palette="Custom" CustomBrushes="{Binding Colors}"/>
+                                        </chart:ColumnSeries.ColorModel>
+                                    </chart:PieSeries>
+                                </chart:SfChart>-->

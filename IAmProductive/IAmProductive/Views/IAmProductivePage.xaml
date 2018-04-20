@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TabbedPage
+    xmlns="http://xamarin.com/schemas/2014/forms" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+    xmlns:local="clr-namespace:IAmProductive;assembly=IAmProductive"
+    xmlns:help_page="clr-namespace:IAmProductive.Views.HelpPage"
+    xmlns:setting_page="clr-namespace:IAmProductive.Views.SettingPage"
+    xmlns:add_tasks_page="clr-namespace:IAmProductive.Views.AddTasks"
+    xmlns:tasks_statistics_page="clr-namespace:IAmProductive.Views.TaskStatisticsPage"
+    x:Class="IAmProductive.IAmProductivePage"
+    BarBackgroundColor ="{StaticResource TabBarColor}">
+   
+    <!--Help Tab-->
+    <help_page:HelpPage/>
+    <!--Add Tasks Tab-->
+    <!--<add_tasks_page:AddTAsksPage/>-->
+    <add_tasks_page:TaskPage/>
+    <!--Task Statistics Tab-->
+    <tasks_statistics_page:StaticsCalenderViewPage/>
+
+
+</TabbedPage>

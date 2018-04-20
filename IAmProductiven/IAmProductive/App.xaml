@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Application 
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    xmlns:controls="clr-namespace:XamForms.Controls;assembly=XamForms.Controls.Calendar"
+    xmlns:cv="clr-namespace:CarouselView.FormsPlugin.Abstractions;assembly=CarouselView.FormsPlugin.Abstractions"
+    x:Class="IAmProductive.App">
+    <Application.Resources>
+        <ResourceDictionary>
+            <!--App Color-->
+            <Color x:Key="ContentBackgroungColor">#616161</Color>
+            <!--Dove Gray-->
+            <Color x:Key="NormalTextColor">Black</Color>
+            <Color x:Key="TextColorForPicker">#9D9D9D</Color>
+            <!--Silver Chalice like gray-->
+            <Color x:Key="ViewsBoarderColor">#949494</Color>
+            <!--Dusty Gray-->
+            <Color x:Key="ToolBarColor">#8371AD</Color>
+            <!--Deluge color-->
+            <Color x:Key="AddCustomTaskBgColor">#F4D362</Color>
+            <!--Cream Can color-->
+            <Color x:Key="TaskCategoryHeaderBgColor">#E4EAEA</Color>
+            <!--Porcelain color like gray shade-->
+            <Color x:Key="AppBgColor">White</Color>
+            <!--Black Haze like white-->
+            <Color x:Key="DefaultTextColor">#C3C5C4</Color>
+            <!--App Font Sizes-->
+            <x:Double x:Key="ChartLegendFontSize">12</x:Double>
+            <x:Double x:Key="SmallFontSize">12</x:Double>
+            <x:Double x:Key="MediumFontSize">16</x:Double>
+            <x:Double x:Key="NormalFontSize">18</x:Double>
+            <x:Double x:Key="LargeFontSize">20</x:Double>
+            <x:Double x:Key="ButtonFontSize">16</x:Double>
+            <!--App Margin-->
+            <x:Double x:Key="SmallMargin">5</x:Double>
+            <x:Double x:Key="MediumMargin">14</x:Double>
+            <x:Double x:Key="NormalMargin">18</x:Double>
+            <x:Double x:Key="LargeMargin">20</x:Double>
+            <x:Double x:Key="ButtonMargin">16</x:Double>
+            <!--Height Sizes-->
+            <x:Double x:Key="LargButtonHeight">70</x:Double>
+            <x:Double x:Key="NormalHeight">50</x:Double>
+            <x:Double x:Key="MediumHeight">40</x:Double>
+            <!--flow list size-->
+            <x:Double x:Key="FlowTaskCellHeight">70</x:Double>
+            <x:Double x:Key="DayTaskOuterSelectionCellHeight">95</x:Double>
+            <x:Double x:Key="DayTaskOuterCellHeight">95</x:Double>
+            <x:Double x:Key="DayTaskInnerCellHeight">90</x:Double>
+            <x:Double x:Key="DayTaskNormalBoarder">2</x:Double>
+            <x:Double x:Key="FlowListCornerRadius">8</x:Double>
+            <x:Double x:Key="DayTaskSelectionBoarderWidth">4</x:Double>
+            <x:Double x:Key="StartTaskDialogHeight">320</x:Double>
+            <!--Icon dimentions-->
+            <x:Double x:Key="LittleDim">20</x:Double>
+            <x:Double x:Key="SmallDim">25</x:Double>
+            <x:Double x:Key="MediumDim">30</x:Double>
+            <!--app opicity-->
+            <x:Double x:Key="NormalOpacity">0.5</x:Double>
+            <!--charts-->
+            <x:Boolean x:Key="IsExplode">False</x:Boolean>
+            <x:Boolean x:Key="IsAnimated">True</x:Boolean>
+            <x:Boolean x:Key="PyramidHeight">420</x:Boolean>
+            <Color x:Key="ChartTickleLAbleColor">#8371AD</Color>
+            <!--app font-->
+            <x:String x:Key="AppFont">TimesNewRomanPSMT</x:String>
+            <Style TargetType="NavigationPage">
+                <Setter Property="BarBackgroundColor" Value="{StaticResource ToolBarColor}"/>
+                <Setter Property="BarTextColor" Value="{StaticResource AppBgColor}"/>
+            </Style>
+            <Style TargetType="controls:Calendar" x:Key="calender_blobal_style">
+                <Setter Property="MultiSelectDates" Value="False"/>
+                <Setter Property="DisableAllDates" Value="False"/>
+                <Setter Property="WeekdaysShow" Value="True"/>
+                <Setter Property="WeekdaysShow" Value="True"/>
+                <Setter Property="ShowNumberOfWeek" Value="False"/>
+                <Setter Property="ShowNumOfMonths" Value="1"/>
+                <Setter Property="WeekdaysTextColor" Value="Black"/>
+                <Setter Property="BorderColor" Value="Transparent"/>
+                <Setter Property="DisabledBorderColor" Value="Transparent"/>
+                <Setter Property="DisabledBackgroundColor" Value="{StaticResource TaskCategoryHeaderBgColor}"/>
+                <Setter Property="DisabledTextColor" Value="{StaticResource NormalTextColor}"/>
+                <Setter Property="SelectedBorderColor" Value="{StaticResource ToolBarColor}"/>
+                <Setter Property="SelectedBackgroundColor" Value="Transparent"/>
+                <Setter Property="SelectedTextColor" Value="{StaticResource ToolBarColor}"/>
+                <Setter Property="SelectedFontSize" Value="25"/>
+                <Setter Property="SelectedFontAttributes" Value="Bold"/>
+            </Style>
+            <Style TargetType="cv:CarouselViewControl" x:Key="carouselview_blobal_style">
+                <Setter Property="ShowArrows" Value="True"/>
+                <Setter Property="ArrowsTransparency" Value="1"/>
+                <Setter Property="ArrowsTintColor" Value="{StaticResource AppBgColor}"/>
+                <Setter Property="ArrowsTintColor" Value="{StaticResource AppBgColor}"/>
+                <Setter Property="ArrowsBackgroundColor" Value="{StaticResource AddCustomTaskBgColor}"/>
+                <Setter Property="BackgroundColor" Value="{StaticResource AppBgColor}"/>
+                <Setter Property="Orientation" Value="Horizontal"/>
+                <Setter Property="InterPageSpacing" Value="20"/>
+            </Style>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

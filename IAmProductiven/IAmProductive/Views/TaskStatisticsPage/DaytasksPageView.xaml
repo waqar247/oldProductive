@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:IAmProductive.Convertors"
+             xmlns:ui_constants="clr-namespace:IAmProductive.Constants"
+             xmlns:renderer="clr-namespace:IAmProductive.Renderers;assembly=IAmProductive"
+             BackgroundColor="{StaticResource AppBgColor}"
+             Title="Stats"
+             xmlns:cv="clr-namespace:CarouselView.FormsPlugin.Abstractions;assembly=CarouselView.FormsPlugin.Abstractions"
+             x:Class="IAmProductive.Views.TaskStatisticsPage.DaytasksPageView">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Color x:Key="LableTextColor">White</Color>
+            <local:TaskHighlighterConverter x:Key="TaskHighlighterConverter"></local:TaskHighlighterConverter>
+            <local:TextVisibiltyConverter  x:Key="TimeSpendVisibiltyConverter" ></local:TextVisibiltyConverter>
+            <local:HighlightDayTaskCellValueConverter  x:Key="DayTaskHighlightCellConverter" ></local:HighlightDayTaskCellValueConverter>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+       
+        <ToolbarItem Text="{x:Static ui_constants:AppConstant.StatsToolbargraphsButton}" Order="Primary" Activated="GraphsToolbarItem_Activated"></ToolbarItem>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+    
+        <AbsoluteLayout>
+            <cv:CarouselViewControl 
+             HorizontalOptions="Fill"
+             VerticalOptions="FillAndExpand"   
+            AbsoluteLayout.LayoutBounds="0,0,1,1"
+            AbsoluteLayout.LayoutFlags="All"
+            Style="{StaticResource carouselview_blobal_style}"
+            x:Name="carousel"
+            ItemsSource="{Binding TaskForDayList}"
+            PositionSelected="Handle_PositionSelected"
+            Scrolled="Handle_Scrolled">
+                <cv:CarouselViewControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout
+                            HorizontalOptions="Fill"
+                            VerticalOptions="Fill"
+                            BackgroundColor="{StaticResource AppBgColor}"
+                            Orientation="Vertical">
+                            <!--Day and month lable-->
+                            <StackLayout
+                                HorizontalOptions="Fill"
+                                HeightRequest="{StaticResource NormalHeight}"
+                                BackgroundColor="{StaticResource TaskCategoryHeaderBgColor}">
+                                <Label
+                                  Text="{Binding MonthAndDate}"
+                                  FontAttributes="Bold" 
+                                  x:Name="DayAndMonth_Show"
+                                  FontFamily="{StaticResource AppFont}"  
+                                  FontSize="{StaticResource LargeFontSize}"
+                                  VerticalOptions="CenterAndExpand"
+                                  HorizontalOptions="CenterAndExpand">
+                                </Label>
+                            </StackLayout>
+                            <ListView 
+                                Margin="0,0,0,0"
+                                x:Name="DayTaskList"
+                                HasUnevenRows="True"
+                                SeparatorVisibility="None"
+                                IsVisible="{Binding IsShowList}"
+                                HorizontalOptions="FillAndExpand" 
+                                VerticalOptions="FillAndExpand"
+                                ItemSelected="DayTaskList_ItemSelected"
+                                BackgroundColor="{StaticResource AppBgColor}"
+                                ItemsSource="{Binding ModelTaskForDayList}">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate >
+                                        <ViewCell >
+                                            <!--list item selection boarder-->
+                                            <Frame
+                                                 Padding="{StaticResource DayTaskSelectionBoarderWidth}"
+                                                 HasShadow="False"
+                                                 Margin="5"
+                                                 CornerRadius="8" 
+                                                 OutlineColor="{Binding IsSelected,Converter={StaticResource DayTaskHighlightCellConverter}}"
+                                                 BackgroundColor="{Binding IsSelected,Converter={StaticResource DayTaskHighlightCellConverter}}"
+                                                 HeightRequest="{StaticResource DayTaskOuterSelectionCellHeight}"
+                                                 VerticalOptions="Start"
+                                                 HorizontalOptions="FillAndExpand">
+                                                <Frame
+                                                     Padding="{StaticResource DayTaskNormalBoarder}"
+                                                     HasShadow="False"
+                                                     CornerRadius="8"
+                                                     OutlineColor="{StaticResource ToolBarColor}"
+                                                     BackgroundColor="{StaticResource ToolBarColor}"  
+                                                     HeightRequest="{StaticResource DayTaskOuterCellHeight}"
+                                                     VerticalOptions="Start"
+                                                     HorizontalOptions="FillAndExpand">
+                                                    
+                                                     <!--trick to achieve the round boarder--> 
+                                                    <Frame
+                                                       HasShadow="false" Padding="{StaticResource DayTaskNormalBoarder}" 
+                                                        CornerRadius="8">
+                                                    <StackLayout
+                                                        Orientation="Vertical"
+                                                        VerticalOptions="Fill"
+                                                        HorizontalOptions="StartAndExpand" 
+                                                        HeightRequest="{StaticResource DayTaskInnerCellHeight}"
+                                                        BackgroundColor="{StaticResource AppBgColor}">
+                                                        <!--Task title-->
+                                                        <Label
+                                                             Text="{Binding TaskTitle}"
+                                                             VerticalOptions="Start"
+                                                             FontFamily="{StaticResource AppFont}"    
+                                                             FontSize="{StaticResource NormalFontSize}"   
+                                                             TextColor="{Binding BGColor}"
+                                                             HorizontalOptions="CenterAndExpand" >
+                                                        </Label>
+                                                        <Grid  >
+                                                            <Grid.RowDefinitions>
+                                                                <RowDefinition Height="{StaticResource NormalHeight}"></RowDefinition>
+                                                            </Grid.RowDefinitions>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                                                <ColumnDefinition Width="1"></ColumnDefinition>
+                                                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                                            </Grid.ColumnDefinitions>
+                                                            <!--Spend time position container-->
+                                                            <StackLayout 
+                                                                Grid.Column="0" 
+                                                                Grid.Row="0"
+                                                                HeightRequest="{StaticResource MediumHeight}" 
+                                                                Orientation="Vertical" 
+                                                                BackgroundColor="{StaticResource AppBgColor}">
+                                                                <!--Spent time container-->
+                                                                <StackLayout
+                                                                    Orientation="Vertical" 
+                                                                    HeightRequest="{StaticResource MediumHeight}" 
+                                                                    HorizontalOptions="CenterAndExpand"
+                                                                    VerticalOptions="CenterAndExpand">
+                                                                    <!--spent time title container-->
+                                                                    <StackLayout 
+                                                                        Orientation="Horizontal"
+                                                                        VerticalOptions="Fill"
+                                                                        HorizontalOptions="StartAndExpand">
+                                                                        <!--hour icon-->
+                                                                        <Image
+                                                                            Source="hour.png"
+                                                                            WidthRequest="{StaticResource LittleDim}"
+                                                                            HeightRequest="{StaticResource LittleDim}">
+                                                                        </Image>
+                                                                        <Label 
+                                                                            Text="Time Spent" 
+                                                                            HeightRequest="25"
+                                                                            FontFamily="{StaticResource AppFont}"
+                                                                            TextColor="{StaticResource NormalTextColor}"
+                                                                            VerticalTextAlignment="Center">
+                                                                        </Label>
+                                                                    </StackLayout>
+                                                                    <!--spent time-->
+                                                                    <Label
+                                                                        Text="{Binding SpentTime}"
+                                                                        FontFamily="{StaticResource AppFont}"
+                                                                        IsVisible="{Binding SpentTime , Converter={StaticResource TimeSpendVisibiltyConverter}}"
+                                                                        TextColor="{Binding BGColor}"
+                                                                        HorizontalOptions="StartAndExpand"
+                                                                        FontSize="{StaticResource ButtonFontSize}" 
+                                                                        Margin="10,-5,0,0"></Label>
+                                                                </StackLayout>
+                                                            </StackLayout>
+                                                            <!--vertical line draw-->
+                                                            <BoxView 
+                                                                Grid.Column="1"
+                                                                Grid.Row="0"
+                                                                BackgroundColor="{StaticResource ToolBarColor}"  
+                                                                WidthRequest="1"
+                                                                HeightRequest="{StaticResource MediumHeight}"></BoxView>
+                                                            <!--Start time position container-->
+                                                            <StackLayout 
+                                                                Grid.Column="2" 
+                                                                Grid.Row="0"
+                                                                HeightRequest="{StaticResource MediumHeight}"
+                                                                Orientation="Vertical" 
+                                                                BackgroundColor="{StaticResource AppBgColor}">
+                                                                <!--Start time container-->
+                                                                <StackLayout
+                                                                    Orientation="Vertical" 
+                                                                    HeightRequest="{StaticResource MediumHeight}" 
+                                                                    HorizontalOptions="CenterAndExpand"
+                                                                    VerticalOptions="CenterAndExpand">
+                                                                    <!--start time title container-->
+                                                                    <StackLayout 
+                                                                        Orientation="Horizontal"
+                                                                        VerticalOptions="Fill"
+                                                                        HorizontalOptions="CenterAndExpand">
+                                                                        <!--clock icon-->
+                                                                        <Image
+                                                                           Source="clock.png"
+                                                                           WidthRequest="{StaticResource LittleDim}"
+                                                                           HeightRequest="{StaticResource LittleDim}">
+                                                                        </Image>
+                                                                        <Label 
+                                                                            Text="Start Time" 
+                                                                            HeightRequest="25"
+                                                                            FontFamily="{StaticResource AppFont}"
+                                                                            TextColor="{StaticResource NormalTextColor}"   
+                                                                            VerticalTextAlignment="Center">
+                                                                        </Label>
+                                                                    </StackLayout>
+                                                                    <!--start time-->
+                                                                    <Label 
+                                                                        TextColor="{Binding BGColor}"
+                                                                        Text="{Binding TaskStartedAt}" 
+                                                                         FontFamily="{StaticResource AppFont}"
+                                                                        HorizontalOptions="StartAndExpand"
+                                                                        FontSize="{StaticResource ButtonFontSize}"
+                                                                        Margin="10,-5,0,0"></Label>
+                                                                </StackLayout>
+                                                            </StackLayout>
+                                                        </Grid>
+                                                    </StackLayout>
+                                                    </Frame>
+                                                </Frame>
+                                            </Frame>
+                                            <ViewCell.ContextActions>
+                                                <!--edit  action button-->
+                                                <MenuItem  Clicked="EditTaskContextual_Clicked" Text="Edit"  CommandParameter="{Binding  DayTaskTrackId}" />
+                                                <!--delete  action button-->
+                                                <MenuItem Clicked="DeleteTaskContextual_Clicked" Text="Delete" CommandParameter="{Binding  DayTaskTrackId}"/>
+                                            </ViewCell.ContextActions>
+                                        </ViewCell>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                            <!-- No data lable-->
+                            <Label 
+                           Text="No Task Found"
+                           FontFamily="{StaticResource AppFont}"
+                           IsVisible="{Binding IsShowError}"
+                           HorizontalOptions="CenterAndExpand"
+                           VerticalOptions="CenterAndExpand"
+                           Margin="2,0,2,2"
+                           FontSize="{StaticResource MediumFontSize}"
+                           HorizontalTextAlignment="Center" />
+                        </StackLayout>
+                    </DataTemplate>
+                </cv:CarouselViewControl.ItemTemplate>
+            </cv:CarouselViewControl>
+            <Image Source="plus.png" AbsoluteLayout.LayoutBounds="1,1,50,50"
+                   Margin="0,0,5,5"
+                   x:Name="AddNewTaskIcon"
+                   AbsoluteLayout.LayoutFlags="PositionProportional">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="AddNewDayTask_Handler" ></TapGestureRecognizer>
+                </Image.GestureRecognizers>
+            </Image>
+        </AbsoluteLayout>
+      
+    </ContentPage.Content>
+</ContentPage>
+
+

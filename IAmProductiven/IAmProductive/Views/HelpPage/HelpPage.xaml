@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="IAmProductive.Views.HelpPage.HelpPage"
+             Title="Help"
+             xmlns:Ad="clr-namespace:IAmProductive.Rendereres;assembly=IAmProductive"
+             BackgroundColor="{StaticResource AppBgColor}"
+             Icon="help_white_icon.png" >
+       <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Label" x:Key="HeaderLable">
+                <Setter Property="FontAttributes" Value="Bold"></Setter>
+                <Setter Property="FontSize" Value="{StaticResource NormalFontSize}"></Setter>
+                <Setter Property="FontFamily" Value="{StaticResource AppFont}"></Setter>
+                <Setter Property="TextColor" Value="{StaticResource NormalTextColor}"></Setter>
+                <Setter Property="Margin" Value="0,5,0,0"></Setter>
+            </Style>
+            <Style TargetType="Label" x:Key="CommonLable">
+                <Setter Property="TextColor" Value="{StaticResource NormalTextColor}"></Setter>
+                <Setter Property="FontFamily" Value="{StaticResource AppFont}"></Setter>
+                <Setter Property="Margin" Value="10,0,10,0"></Setter>
+            </Style>
+            <Style TargetType="BoxView" x:Key="BoxViewProperties">
+                <Setter Property="HeightRequest" Value="2"></Setter>
+                <Setter Property="Margin" Value="10,0,10,0"></Setter>
+                <Setter Property="BackgroundColor" Value="{StaticResource DefaultTextColor}"></Setter>
+            </Style>
+            <Style TargetType="Image" x:Key="Icons">
+                <Setter Property="HeightRequest" Value="{StaticResource SmallDim}"></Setter>
+                <Setter Property="WidthRequest" Value="{StaticResource SmallDim}"></Setter>
+            </Style>
+            <Style TargetType="StackLayout" x:Key="StackLayoutProperties">
+                <Setter Property="Margin" Value="5,0,5,0"></Setter>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <StackLayout VerticalOptions="Fill" HorizontalOptions="Fill" Margin="0">
+            <!--text content container-->
+            <ScrollView
+                   HorizontalOptions="Fill"
+                   VerticalOptions="Fill">
+                  <StackLayout>
+                      <!--header container-->
+                      <StackLayout
+                        HorizontalOptions="Fill"
+                        HeightRequest="{StaticResource NormalHeight}"
+                        BackgroundColor="{StaticResource TaskCategoryHeaderBgColor}">
+                        <Label
+                          Text="How to use this app"
+                          FontAttributes="Bold"
+                          FontFamily="{StaticResource AppFont}"  
+                          FontSize="{StaticResource LargeFontSize}"
+                          VerticalOptions="CenterAndExpand"
+                          HorizontalOptions="CenterAndExpand">
+                        </Label>
+                    </StackLayout>
+                    <StackLayout
+                      Orientation="Horizontal"
+                      Style="{StaticResource StackLayoutProperties}"
+                      HorizontalOptions="FillAndExpand">
+                        <Image
+                          Source="bulb.png"
+                          HorizontalOptions="Start"
+                          Style="{StaticResource Icons}"></Image>
+                        <Label
+                          Text="What is this app?"
+                          Style="{StaticResource HeaderLable}"/>
+                    </StackLayout>
+                    <!--line-->
+                    <BoxView
+                      HorizontalOptions="StartAndExpand"
+                      WidthRequest="170"
+                      Style="{StaticResource BoxViewProperties}"/>
+                    <Label
+                      Style="{StaticResource CommonLable}"
+                      Text="This app will help you become more productive by tracking your day, all that is required is pressing a few buttons"/>
+                    <StackLayout
+                       Orientation="Horizontal"
+                       Style="{StaticResource StackLayoutProperties}"
+                       HorizontalOptions="FillAndExpand">
+                        <Image
+                          Source="bulb.png"
+                          HorizontalOptions="Start"
+                          Style="{StaticResource Icons}"></Image>
+                        <Label
+                          Style="{StaticResource HeaderLable}"
+                          Text="How to use this app?"/>
+                    </StackLayout>
+                    <!--Line-->
+                    <BoxView
+                       HorizontalOptions="StartAndExpand"
+                       WidthRequest="200"
+                       Style="{StaticResource BoxViewProperties}">
+                    </BoxView>
+                    <Label   
+                    Style="{StaticResource CommonLable}">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="In the tasks page you will 3 types of buttons, these buttons are: " />
+                                <Span Text="Productive" FontAttributes="Bold" />
+                                <Span Text=", " />
+                                <Span Text="Unproductive" FontAttributes="Bold"/>
+                                <Span Text=", and " />
+                                <Span Text="Miscellaneous" FontAttributes="Bold"/>
+                                <Span Text=". You will press a button according to which task or activity you are currently doing, you can also add your own custom task. You can also edit the names of the tasks." />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Label
+                      Style="{StaticResource CommonLable}"
+                      Text="Once you do press a button then you will be prompt whether or not you want to add it. If you press no then nothing happends, if you press yes a calender will pop up so you can add the task for the current day. Keep in mind you cannot add tasks for any other day (though you can do this on the stats page)." />
+                    <Label
+                      Style="{StaticResource CommonLable}"
+                      Text ="Once you press the day you will see your tasks on a page, here will be all the tasks/activities you have performed. Also notice there is an Add button, here you can manually add tasks for whatever day. This is used incase you forgot to add something or made a mistake. You can also press the Stats button next to the Add button to get a barchart or a piechart version of your progress."/>
+                    <BoxView BackgroundColor="Transparent" HeightRequest="20"></BoxView>
+                </StackLayout>
+            </ScrollView>
+            <!--ad-->
+            <Ad:AdBanner IsVisible="{Binding IsEnabledAds}"
+                         Size="Standardbanner" 
+                         VerticalOptions="EndAndExpand"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

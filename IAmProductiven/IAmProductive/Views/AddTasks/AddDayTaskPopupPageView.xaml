@@ -1,0 +1,176 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<pages:PopupPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+             xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
+             xmlns:local="clr-namespace:IAmProductive.Rendereres;assembly=IAmProductive"
+             HasSystemPadding="True"
+              xmlns:renderer="clr-namespace:IAmProductive.Renderers;assembly=IAmProductive"    
+             xmlns:converters="clr-namespace:IAmProductive.Convertors"  
+             x:Class="IAmProductive.Views.AddTasks.AddDayTaskPopupPageView">
+    <!--popup animation control-->
+    <pages:PopupPage.Animation>
+        <animations:ScaleAnimation
+          PositionIn="Left"
+          PositionOut="Right"
+          ScaleIn="1"
+          ScaleOut="0.7"
+          DurationIn="700"
+          EasingIn="BounceOut"/>
+    </pages:PopupPage.Animation>
+    <pages:PopupPage.Resources>
+        <ResourceDictionary>
+            <converters:DateTimeToTimeSpanConverter x:Key="dateTimeSpanConverter"></converters:DateTimeToTimeSpanConverter>
+            <converters:MultiTriggerConverter x:Key="dataHasBeenEnterdConverter"></converters:MultiTriggerConverter>
+            <converters:IsValidTaskTypeSelectedTriggerConverter x:Key="isValidValueSelectedConverter"></converters:IsValidTaskTypeSelectedTriggerConverter>
+        </ResourceDictionary>
+    </pages:PopupPage.Resources>
+    <ScrollView
+         HorizontalOptions="Center"
+         VerticalOptions="Center">
+        <renderer:CustomFrame
+              Padding="0"
+              OutlineColor="White"
+              HasShadow="False"
+              Margin="{StaticResource LargeMargin}"
+              HeightRequest="{StaticResource StartTaskDialogHeight}"
+              VerticalOptions="Start"
+              HorizontalOptions="FillAndExpand">
+            <StackLayout 
+                     IsVisible="True"
+                     x:Name="TaskInputPanel">
+                <!--Header container-->
+                <StackLayout
+                        HorizontalOptions="Fill"
+                        HeightRequest="{StaticResource NormalHeight}"
+                        BackgroundColor="{StaticResource ToolBarColor}">
+                    <Label
+                          Text="Select Task"
+                          x:Name="RequestTitle"  
+                          FontAttributes="Bold"
+                          FontFamily="{StaticResource AppFont}"  
+                          TextColor="{StaticResource AddCustomTaskBgColor}"  
+                          FontSize="{StaticResource LargeFontSize}"
+                          VerticalOptions="CenterAndExpand"
+                          HorizontalOptions="CenterAndExpand">
+                    </Label>
+                </StackLayout>
+                <StackLayout 
+                        Margin="10,0,10,0">
+                    <!--Time container-->
+                    <StackLayout 
+                            Orientation="Horizontal"
+                            HorizontalOptions="Fill">
+                        <!--clock icon-->
+                        <Image 
+                               Source="clock.png" 
+                               WidthRequest="{StaticResource MediumDim}"
+                               HeightRequest="{StaticResource MediumDim}">
+                        </Image>
+                        <!--time picker-->
+                        <TimePicker
+                            x:Name="startTmePicker" 
+                            Margin="5,0,0,0"
+                            BackgroundColor="{StaticResource AppBgColor}"
+                            HorizontalOptions="FillAndExpand"
+                            Time="{Binding StartTime, Converter={StaticResource dateTimeSpanConverter}}" />
+                    </StackLayout>
+                    <!--picker for task type selection-->
+                    <Picker
+                        x:Name="TaskTypePicker" 
+                        ItemsSource="{Binding TasktypesList}"
+                        IsVisible="False"
+                        BackgroundColor="{StaticResource AppBgColor}"
+                        SelectedIndexChanged="TypePicker_SelectedIndexChanged"
+                        SelectedItem="{Binding SelectedTaskType}"  
+                        Title="Select Task Type"/>
+                    <!--button to open task type picker  -->
+                    <Button
+                       BorderWidth="1" 
+                       TextColor="{StaticResource TextColorForPicker}" 
+                       BorderColor="{StaticResource DefaultTextColor}"
+                       BorderRadius="5" 
+                       x:Name="typePickerButton"
+                       Margin="0,5,0,0"
+                       FontAttributes="Bold" 
+                       FontFamily="{StaticResource AppFont}"   
+                       Clicked="TypePickerButton_Clicked"
+                       Text="{Binding SelectedTaskType}"
+                       BackgroundColor="Transparent"/>
+                    <!--Tasks agains selected task type-->
+                    <Picker 
+                       x:Name="TaskPicker" 
+                       ItemsSource="{Binding TaskList}"
+                       IsVisible="False"
+                       BackgroundColor="{StaticResource AppBgColor}"
+                       SelectedItem="{Binding SelectedTask}"  
+                       Title="Select Task"/>
+                    <!--button to open task  picker  -->
+                    <Button
+                       BorderWidth="1" 
+                       TextColor="{StaticResource TextColorForPicker}" 
+                       BorderColor="{StaticResource DefaultTextColor}"
+                       BorderRadius="5" 
+                       FontAttributes="Bold" 
+                       x:Name="taskPickerButton"
+                       Margin="0,5,0,0"
+                       FontFamily="{StaticResource AppFont}"   
+                       Text="{Binding SelectedTask}"
+                       Clicked="TaskPickerButton_Clicked" 
+                       BackgroundColor="Transparent"/>
+                    <Grid Margin="0,10,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Button
+                            Grid.Column="0" 
+                            Grid.Row="0"
+                            HorizontalOptions="Fill"
+                            Text="Cancel"
+                            Clicked="CancelBtn_Clicked"
+                            x:Name="CancelBtn"
+                            FontAttributes="Bold"
+                            Margin="0,0,2,0"
+                            FontFamily="{StaticResource AppFont}"  
+                            TextColor="{StaticResource AppBgColor}" 
+                            BackgroundColor="{StaticResource DefaultTextColor}"></Button>
+                        <!--save task button-->
+                        <Button  
+                            Grid.Column="1" 
+                            Grid.Row="0"
+                            Text="Save"
+                            Margin="2,0,0,0"       
+                            IsEnabled="False"   
+                            BorderRadius="5"
+                            FontAttributes="Bold"
+                            FontFamily="{StaticResource AppFont}"  
+                            BackgroundColor="{StaticResource AddCustomTaskBgColor}"    
+                            TextColor="{StaticResource NormalTextColor}"     
+                            Clicked="SaveButton_Clicked"
+                            HorizontalOptions="FillAndExpand">
+                            <Button.Triggers>
+                                <MultiTrigger TargetType="Button">
+                                    <MultiTrigger.Conditions>
+                                        <BindingCondition Binding="{Binding  Source={x:Reference typePickerButton},
+                                                Path=Text,  
+                                                Converter={StaticResource isValidValueSelectedConverter}}"
+                                                Value="true" />
+                                        <BindingCondition Binding="{Binding  Source={x:Reference taskPickerButton},
+                                                Path=Text,  
+                                                Converter={StaticResource isValidValueSelectedConverter}}"
+                                                Value="true" />
+                                    </MultiTrigger.Conditions>
+                                    <Setter Property="IsEnabled" Value="True" />
+                                </MultiTrigger>
+                            </Button.Triggers>
+                        </Button>
+                    </Grid>
+                </StackLayout>
+            </StackLayout>
+        </renderer:CustomFrame>
+    </ScrollView>
+</pages:PopupPage>

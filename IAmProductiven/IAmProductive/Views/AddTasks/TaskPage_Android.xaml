@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:convertor="clr-namespace:IAmProductive.Convertors"
+             Title="Tasks"
+             xmlns:renderer="clr-namespace:IAmProductive.Renderers;assembly=IAmProductive"
+             Icon="task_white_icon.png"
+             xmlns:Ad="clr-namespace:IAmProductive.Rendereres;assembly=IAmProductive"
+             BackgroundColor="{StaticResource AppBgColor}"         
+             xmlns:flv="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.FlowListView"
+             x:Class="IAmProductive.Views.AddTasks.TaskPage_Android">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <convertor:HideShowEditOptionConvertor x:Key="hideShowEditOptionConvertor"></convertor:HideShowEditOptionConvertor>
+            <convertor:AndroidTaskHeighlightConverter x:Key="cellHeightConvertor"></convertor:AndroidTaskHeighlightConverter>
+            <convertor:HeaderBGColorConvertor x:Key="headerBGColorConvertor"></convertor:HeaderBGColorConvertor>
+            <convertor:HideShowAddTaskBtnConverter x:Key="HideShowAddCustomTaskBtnConvertor"></convertor:HideShowAddTaskBtnConverter>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <StackLayout HorizontalOptions="Fill" VerticalOptions="Fill" Orientation="Vertical">
+        <flv:FlowListView
+          x:Name="flowListView"
+          SeparatorVisibility="None"
+          HasUnevenRows="True"
+          FlowColumnCount="3"
+          FlowUseAbsoluteLayoutInternally="false"
+          FlowColumnExpand="None"
+          BackgroundColor="{StaticResource AppBgColor}"
+          FlowItemTappedCommand="{Binding ItemTapCommand}"
+          IsGroupingEnabled="true"
+          FlowGroupDisplayBinding="{Binding Path=Key}"
+          FlowItemsSource="{Binding Items}">
+            <flv:FlowListView.GroupHeaderTemplate>
+                <DataTemplate>
+                    <ViewCell >
+                            <StackLayout
+                             MinimumHeightRequest="{StaticResource NormalHeight}"
+                             BackgroundColor="Transparent"
+                             HorizontalOptions="Fill">
+                                <!--add custom task button container / behave like button-->
+                                    <Frame
+                                        CornerRadius="3"  
+                                        HorizontalOptions="Fill"
+                                        Padding="0"
+                                        Margin="{StaticResource SmallMargin}"
+                                        HeightRequest="{StaticResource NormalHeight}"
+                                        IsVisible="{Binding Path=Key,Converter={StaticResource HideShowAddCustomTaskBtnConvertor}}">
+                                        <StackLayout
+                                          HeightRequest="{StaticResource NormalHeight}"
+                                          ClassId="{Binding Path=Key}"
+                                          x:Name="AddCustomTaskContainerBtn"  
+                                          BackgroundColor="{StaticResource TaskCategoryHeaderBgColor}"
+                                          HorizontalOptions="Fill"> 
+                                            <StackLayout.GestureRecognizers>
+                                                <TapGestureRecognizer
+                                                    Tapped="AddCustomTaskContainer_Tapped">
+                                                </TapGestureRecognizer>
+                                            </StackLayout.GestureRecognizers>
+                                            <Label
+                                            FontSize="{StaticResource ButtonFontSize}"
+                                            HeightRequest="{StaticResource NormalHeight}"
+                                            FontAttributes="Bold"
+                                            TextColor="Black"
+                                            FontFamily="{StaticResource AppFont}"  
+                                            VerticalTextAlignment="Center"
+                                            HorizontalTextAlignment="Center"
+                                            BackgroundColor="{StaticResource AddCustomTaskBgColor}"
+                                            VerticalOptions="Fill"
+                                            HorizontalOptions="Fill"
+                                            Text="Add Custom Task"> 
+                                            </Label>
+                                        </StackLayout>
+                                    </Frame>
+                            <!--Category header title-->
+                            <StackLayout
+                                 IsVisible="{Binding Path=Key,Converter={StaticResource HideShowAddCustomTaskBtnConvertor}, ConverterParameter={x:Reference HeaderLable}}"
+                                  HeightRequest="{StaticResource NormalHeight}"
+                                  BackgroundColor="{StaticResource TaskCategoryHeaderBgColor}"
+                                  Margin="0,0,0,5"
+                                  HorizontalOptions="Fill">
+                                <Label
+                                    BackgroundColor="Transparent"
+                                    FontSize="{StaticResource LargeFontSize}"
+                                    x:Name="HeaderLable"
+                                    FontFamily="{StaticResource AppFont}"  
+                                    FontAttributes="Bold"
+                                    TextColor="{Binding Path=Key,Converter={StaticResource headerBGColorConvertor}}"
+                                    VerticalOptions="CenterAndExpand"
+                                    HorizontalOptions="CenterAndExpand" 
+                                    Text="{Binding Path=Key}">
+                                </Label>
+                            </StackLayout>
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </flv:FlowListView.GroupHeaderTemplate>
+                <flv:FlowListView.FlowColumnTemplate>
+                    <DataTemplate>
+                    <AbsoluteLayout
+                          VerticalOptions="FillAndExpand"
+                          HorizontalOptions="Fill"
+                          x:Name="TaskItem"
+                          IsVisible="{Binding Title,Converter={StaticResource HideShowAddCustomTaskBtnConvertor}}">
+                     <Frame
+                        AbsoluteLayout.LayoutBounds="0,0,1,1"
+                        AbsoluteLayout.LayoutFlags="All"
+                        Margin="{StaticResource SmallMargin}"
+                        Padding="2"
+                        CornerRadius="8"
+                        HeightRequest="{StaticResource FlowTaskCellHeight}"
+                        VerticalOptions="FillAndExpand"
+                        OutlineColor="{StaticResource ToolBarColor}"
+                        BackgroundColor="{StaticResource ToolBarColor}"
+                        HasShadow="False"
+                        HorizontalOptions="FillAndExpand">
+                        <!--Task Container-->
+                        <!--to achieve the round boarder-->
+                            <Frame  Padding="2"  HasShadow="False" CornerRadius="8">
+                                <Grid HorizontalOptions="FillAndExpand"  VerticalOptions="FillAndExpand">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <!--Hack Lable-->
+                                    <Label
+                                    IsVisible="false"
+                                    Text="{Binding TaskType}"
+                                    x:Name="HackLabel"
+                                    FontFamily="{StaticResource AppFont}"  
+                                    HorizontalOptions="Fill"
+                                    VerticalOptions="CenterAndExpand"/>
+                                    <!--task title-->
+                                    <Label
+                                    HorizontalOptions="Fill"
+                                    VerticalOptions="Fill"
+                                    BackgroundColor="Transparent"
+                                    VerticalTextAlignment="Center"
+                                    HorizontalTextAlignment="Center"
+                                    FontFamily="{StaticResource AppFont}"  
+                                    LineBreakMode="WordWrap"
+                                    TextColor="{Binding IsSelected,Converter={StaticResource cellHeightConvertor },ConverterParameter={x:Reference Name=HackLabel}}"
+                                    FontSize="Medium"
+                                    Text="{Binding Title}"/>
+
+                                </Grid>
+                            </Frame>
+                        </Frame>
+                        <!--edit option-->
+                        <Image
+                           Source="pencil.png"
+                           IsVisible="{Binding Title,Converter={StaticResource hideShowEditOptionConvertor}"
+                           ClassId="{Binding TaskTrackId}"
+                           AbsoluteLayout.LayoutBounds="1,0,23,23"
+                           Margin="0,4,4,0"
+                           AbsoluteLayout.LayoutFlags="PositionProportional">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer
+                                          Tapped="EditGestureRecognizer_Tapped">
+                                </TapGestureRecognizer>
+                            </Image.GestureRecognizers>
+                        </Image>
+                    </AbsoluteLayout>
+                </DataTemplate>
+            </flv:FlowListView.FlowColumnTemplate>
+        </flv:FlowListView>
+            <!--ad-->
+            <Ad:AdBanner IsVisible="{Binding IsEnabledAds}"
+                         Size="Standardbanner" 
+                         VerticalOptions="End"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

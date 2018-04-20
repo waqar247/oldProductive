@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:convertor="clr-namespace:IAmProductive.Convertors"
+    Title="Tasks"
+    xmlns:renderer="clr-namespace:IAmProductive.Renderers;assembly=IAmProductive"
+    Icon="task_white_icon.png"
+    BackgroundColor="{StaticResource AppBgColor}"  
+    xmlns:Ad="clr-namespace:IAmProductive.Rendereres;assembly=IAmProductive"         
+    xmlns:flv="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.FlowListView"
+    x:Class="IAmProductive.Views.AddTasks.TaskPage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <convertor:HideShowEditOptionConvertor x:Key="hideShowEditOptionConvertor"></convertor:HideShowEditOptionConvertor>
+            <convertor:HighlightCellConvertor x:Key="cellHeightConvertor"></convertor:HighlightCellConvertor>
+            <convertor:HeaderBGColorConvertor x:Key="headerBGColorConvertor"></convertor:HeaderBGColorConvertor>
+            <convertor:HideShowAddTaskBtnConverter x:Key="HideShowAddCustomTaskBtnConvertor"></convertor:HideShowAddTaskBtnConverter>
+            <convertor:IOSHideHackTaskConverter x:Key="IOSHideHackItemConverter"></convertor:IOSHideHackTaskConverter>
+            <convertor:IOSAddCustomTaskBtnBgColorConverter x:Key="IOSCustomTaskBtnBgColorConverter"></convertor:IOSAddCustomTaskBtnBgColorConverter>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <StackLayout HorizontalOptions="Fill" Margin="0,20,0,0" VerticalOptions="Fill" Orientation="Vertical">
+            <flv:FlowListView
+              x:Name="flowListView"
+              SeparatorVisibility="None"
+              HasUnevenRows="True"
+              FlowColumnCount="3"
+              FlowUseAbsoluteLayoutInternally="false"
+              FlowColumnExpand="None"
+              BackgroundColor="{StaticResource AppBgColor}"
+              FlowItemTappedCommand="{Binding ItemTapCommand}"
+              IsGroupingEnabled="true"
+              FlowGroupDisplayBinding="{Binding Path=Key}"
+              FlowItemsSource="{Binding Items}">
+                <flv:FlowListView.GroupHeaderTemplate>
+                    <DataTemplate>
+                        <ViewCell >
+                            <StackLayout
+                                 MinimumHeightRequest="{StaticResource NormalHeight}"
+                                 BackgroundColor="Transparent"
+                                 HorizontalOptions="Fill"> 
+                                <StackLayout
+                                      HeightRequest="{StaticResource NormalHeight}"
+                                      IsVisible="{Binding Path=Key,Converter={StaticResource IOSHideHackItemConverter}, ConverterParameter={x:Reference HeaderLable}}"
+                                      BackgroundColor="{StaticResource TaskCategoryHeaderBgColor}"
+                                      Margin="0,0,0,5"
+                                      HorizontalOptions="Fill"> 
+                                    <Label
+                                        BackgroundColor="Transparent"
+                                        FontSize="{StaticResource LargeFontSize}"
+                                        x:Name="HeaderLable"
+                                        FontFamily="{StaticResource AppFont}"  
+                                        FontAttributes="Bold"
+                                        TextColor="{Binding Path=Key,Converter={StaticResource headerBGColorConvertor}}"
+                                        VerticalOptions="CenterAndExpand"
+                                        HorizontalOptions="CenterAndExpand" 
+                                        Text="{Binding Path=Key}"> 
+                                    </Label>
+                                </StackLayout>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </flv:FlowListView.GroupHeaderTemplate>
+                <flv:FlowListView.FlowColumnTemplate>
+                    <DataTemplate>
+                        <AbsoluteLayout
+                          VerticalOptions="FillAndExpand"
+                          HorizontalOptions="Fill"
+                          x:Name="TaskItem">
+                            <Frame
+                                AbsoluteLayout.LayoutBounds="0,0,1,1"
+                                AbsoluteLayout.LayoutFlags="All"
+                                Margin="{StaticResource SmallMargin}"
+                                Padding="2"
+                                CornerRadius="8"
+                                HeightRequest="{StaticResource FlowTaskCellHeight}"
+                                VerticalOptions="FillAndExpand"
+                                OutlineColor="{StaticResource ToolBarColor}"
+                                BackgroundColor="{StaticResource ToolBarColor}"
+                                HasShadow="False"
+                                HorizontalOptions="FillAndExpand"> 
+                                <!--Task Container-->
+                                <!--to achieve the round boarder-->
+                                  <Frame  
+                                    Padding="2" 
+                                    HasShadow="False" 
+                                    CornerRadius="8"
+                                    BackgroundColor="{Binding Title,Converter={StaticResource IOSCustomTaskBtnBgColorConverter }"> 
+                                    <!--to achieve the round boarder-->
+                                    <Grid 
+                                        HorizontalOptions="FillAndExpand" 
+                                        BackgroundColor="{Binding Title,Converter={StaticResource IOSCustomTaskBtnBgColorConverter }"
+                                        VerticalOptions="FillAndExpand"> 
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <!--Hack Lable-->
+                                        <Label
+                                            IsVisible="false"
+                                            Text="{Binding TaskType}"
+                                            x:Name="HackLabel"
+                                            FontFamily="{StaticResource AppFont}"  
+                                            HorizontalOptions="Fill"
+                                            VerticalOptions="CenterAndExpand"/> 
+                                        <!--task title-->
+                                        <Label
+                                            HorizontalOptions="Fill"
+                                            VerticalOptions="Fill"
+                                            BackgroundColor="Transparent"
+                                            AbsoluteLayout.LayoutFlags="PositionProportional,WidthProportional"
+                                            AbsoluteLayout.LayoutBounds=".5,.5,1,100"
+                                            VerticalTextAlignment="Center"
+                                            HorizontalTextAlignment="Center"
+                                            FontFamily="{StaticResource AppFont}"  
+                                            LineBreakMode="WordWrap"
+                                            TextColor="{Binding Title,Converter={StaticResource cellHeightConvertor },ConverterParameter={x:Reference Name=HackLabel}}"
+                                            FontSize="Medium"
+                                            Text="{Binding Title}" /> 
+                                    </Grid>
+                                </Frame>
+                            </Frame>
+                            <!--edit option-->
+                            <Image
+                               Source="pencil.png"
+                               IsVisible="{Binding Title,Converter={StaticResource hideShowEditOptionConvertor}"
+                               ClassId="{Binding TaskTrackId}"
+                               AbsoluteLayout.LayoutBounds="1,0,23,23"
+                               Margin="0,4,4,0"
+                               AbsoluteLayout.LayoutFlags="PositionProportional">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer
+                                          Tapped="EditGestureRecognizer_Tapped">
+                                    </TapGestureRecognizer>
+                                </Image.GestureRecognizers>
+                            </Image>
+                        </AbsoluteLayout>
+                    </DataTemplate>
+                </flv:FlowListView.FlowColumnTemplate>
+
+            </flv:FlowListView>
+            <!--ads-->
+            <Ad:AdBanner 
+            IsVisible="{Binding IsEnabledAds}"
+            Size="Standardbanner" 
+            VerticalOptions="End"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
+

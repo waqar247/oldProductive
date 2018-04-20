@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<pages:PopupPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+    xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
+    xmlns:local="clr-namespace:IAmProductive.Rendereres;assembly=IAmProductive"
+    HasSystemPadding="True"
+     xmlns:renderer="clr-namespace:IAmProductive.Renderers;assembly=IAmProductive"
+    xmlns:converters="clr-namespace:IAmProductive.Convertors"
+    x:Class="IAmProductive.Views.AddTasksViews.AddAndEditTasksPopUpViewPage">
+   <!--popup page animation-->
+    <pages:PopupPage.Animation>
+        <animations:ScaleAnimation
+          PositionIn="Left"
+          PositionOut="Right"
+          ScaleIn="1"
+          ScaleOut="0.7"
+          DurationIn="700"
+          EasingIn="BounceOut"/>
+    </pages:PopupPage.Animation>
+    <pages:PopupPage.Resources>
+        <ResourceDictionary>
+            <converters:MultiTriggerConverter x:Key="dataHasBeenEnterdConverter"></converters:MultiTriggerConverter>
+        </ResourceDictionary>
+    </pages:PopupPage.Resources>
+    <ScrollView
+         HorizontalOptions="Center"
+         VerticalOptions="Center">
+        <renderer:CustomFrame
+              Padding="0"
+              OutlineColor="White"
+              HasShadow="False"
+              Margin="20"
+              HeightRequest="200"
+              VerticalOptions="Start"
+              HorizontalOptions="FillAndExpand">
+            <StackLayout>
+                <StackLayout
+                    HorizontalOptions="Fill"
+                    HeightRequest="{StaticResource NormalHeight}"
+                    BackgroundColor="{StaticResource ToolBarColor}">
+                   <Label
+                      Text="Edit Name"
+                      x:Name="RequestTitle"  
+                      FontAttributes="Bold"
+                      FontFamily="{StaticResource AppFont}"    
+                      TextColor="{StaticResource AddCustomTaskBgColor}"  
+                      FontSize="{StaticResource LargeFontSize}"
+                      VerticalOptions="CenterAndExpand"
+                      HorizontalOptions="CenterAndExpand">
+                    </Label>
+                </StackLayout>
+                <Entry 
+                    HorizontalOptions="Fill"
+                    HorizontalTextAlignment="Center"
+                    Placeholder="Name"
+                    x:Name="taskName" 
+                    FontAttributes="Bold"
+                    FontFamily="{StaticResource AppFont}"  
+                    Text="{Binding  Task.Title}"
+                    Margin="20"
+                    TextColor="{StaticResource NormalTextColor}"></Entry>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Button
+                        Grid.Column="0" 
+                        Grid.Row="0"
+                        HorizontalOptions="Fill"
+                        Text="Cancel"
+                        FontAttributes="Bold"
+                        FontFamily="{StaticResource AppFont}"  
+                        x:Name="CancelBtn"
+                        Clicked="CancelBtn_Clicked"
+                        Margin="10,0,2,0"
+                        TextColor="{StaticResource AppBgColor}" 
+                        BackgroundColor="{StaticResource DefaultTextColor}"></Button>
+                    <Button
+                        Grid.Column="1" 
+                        Grid.Row="0"
+                        HorizontalOptions="Fill"
+                        Text="Save"
+                        FontAttributes="Bold"
+                        FontFamily="{StaticResource AppFont}"  
+                        IsEnabled="False" 
+                        Clicked="Save_Clicked"
+                        Margin="2,0,10,0"
+                        TextColor="{StaticResource NormalTextColor}" 
+                        BackgroundColor="{StaticResource AddCustomTaskBgColor}">
+                        <Button.Triggers>
+                            <DataTrigger TargetType="Button"
+                                Binding="{Binding Source={x:Reference taskName},
+                                Path=Text.Length,
+                                Converter={StaticResource dataHasBeenEnterdConverter}}"
+                                Value="true">
+                                <Setter Property="IsEnabled" Value="True" />
+                            </DataTrigger>
+                        </Button.Triggers>
+                    </Button>
+                </Grid>
+            </StackLayout>
+        </renderer:CustomFrame>
+    </ScrollView>
+</pages:PopupPage>

@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+              xmlns:controls="clr-namespace:XamForms.Controls;assembly=XamForms.Controls.Calendar"
+             BackgroundColor="White"
+             Title="Stats"
+             xmlns:Ad="clr-namespace:IAmProductive.Rendereres;assembly=IAmProductive"
+             Icon="stat_white_icon.png"
+             x:Class="IAmProductive.Views.TaskStatisticsPage.StaticsCalenderViewPage">
+    <ContentPage.Content>
+        <StackLayout HorizontalOptions="Fill" VerticalOptions="Fill" Orientation="Vertical">
+            <ScrollView
+            HorizontalOptions="Fill" 
+            VerticalOptions="FillAndExpand">
+                <StackLayout 
+                HorizontalOptions="Fill"
+                VerticalOptions="Fill">
+                    <StackLayout
+                    HorizontalOptions="Fill"
+                    HeightRequest="{StaticResource NormalHeight}"
+                    BackgroundColor="{StaticResource TaskCategoryHeaderBgColor}">
+                        <Label
+                      Text="Select a date"
+                      FontAttributes="Bold"
+                      FontFamily="{StaticResource AppFont}"   
+                      FontSize="{StaticResource LargeFontSize}"
+                      VerticalOptions="CenterAndExpand"
+                      HorizontalOptions="CenterAndExpand">
+                        </Label>
+                    </StackLayout>
+                    <controls:Calendar
+                    x:Name="calender"
+                    DateClicked="calender_DateClicked"
+                    TitleLeftArrowIsVisible="False"
+                    TitleRightArrowIsVisible="False"
+                    StartDay="Monday"
+                    DatesFontFamily="{StaticResource AppFont}"
+                    EnableTitleMonthYearView="False"
+                    Style="{StaticResource calender_blobal_style}" 
+                    SelectedDate="{Binding CurrentSelectedDate}"
+			        DateCommand="{Binding DateChosenForViewTasksCommand}">
+                    </controls:Calendar>
+                </StackLayout>
+            </ScrollView>
+            <!--ad-->
+            <Ad:AdBanner 
+            IsVisible="{Binding IsEnabledAds}"
+            Size="Standardbanner" 
+            VerticalOptions="EndAndExpand"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
